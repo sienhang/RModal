@@ -1,78 +1,96 @@
-ReactModal
-==========
+# Modal模态框组件
 
-modal的react实现，实现方式有很多种，这里主要是利用factory的方法生成动态的modal，后续朋友们可以根据已有的动态文件创建新的效果.
+## 一、运行Demo
 
-## 项目通用js引用说明
+1. npm install
+2. gulp watch
 
-react项目的通用引用包cdn路径为
-//miz-cdn.b0.upaiyun.com/miz-js-lib/miz-react.min.js
-封装了 react-0.14.7.js ract-dom.0.14.7.js react-router-2.0.1.min.js
-压缩版本，源码可以自己去下载来看
+有些时候国内npm源访问比较慢，那么推荐使用cnpm。
 
-辅助js
-//miz-cdn.b0.upaiyun.com/miz-js-lib/miz-js-base.min.js
-包含了 zepto.min.js
-      fastclick.js
-      lodash.js
-      q.js
-      TapEffect.js
-由于lodash可以根据方法分模块加载，在以后的版本中决定把lodash移除，需要使用自行在项目中require即可。
+1. npm install cnpm -g
+2. cnpm install
+3. gulp watch
 
-动画js使用的是green-sock
-//miz-cdn.b0.upaiyun.com/miz-js-lib/green-sock.min.js
-包含了tweenlit drag组件。至于green-sock的api请参考 [green-sock官网](http://greensock.com/)
+## 二、用法Usage
 
-## Modals类型
+##### 详细实例见demo
 
-* DropModal
-* LeftModal
-* ScaleModal
+    var React = require('react');
+    var ReactDOM = require('react-dom');
+    var Modal = require('../src/modal/modal');
+    var App = React.createClass({
+        getInitialState:function(){ //通过改变show的状态来控制模态框的弹出和关闭
+           return {show:false};
+        },
+        handleOpen:function(){
+           this.setState({show:true});
+        },
+        handleClose:function(){
+           this.setState({show:false});
+        },  
+        render: function(){
+          var btnOpen={width:140,height:50,margin:'15px'};  //弹出模态框按钮样式
+          var btnClose={width:120,height:30,margin:'15px'}; //关闭模态框按钮样式
+          return (
+            <div>
+              <button style={btnOpen} onClick={this.handleOpen}>点击弹出模态框</button> 
+              <Modal 
+                 width={400}     //设置模态框的宽度
+                 height={250}    //设置模态框的高度
+                 top={150}       //设置模态框距离可视窗口上方的距离
+                 animate="slide" //设置模态框弹出和关闭的动画效果 
+                 show={this.state.show} //通过show属性值的改变来控制模态框的弹出和关闭
+              > 
+                 <div style={{margin:'15px',fontSize:'16px'}}>这是模态框</div>
+                 <button style={btnClose} onClick={this.handleClose}>点击关闭模态框</button>
+              </Modal>
+            </div>
+          );
+        }
+    });
+    ReactDOM.render(<App />, document.getElementById('AppContainer'));
+## 三、API
 
-## 依赖说明
+1. Modal参数解析
 
-本例依赖 react-kit
-需要 cnpm isntall react-kit
-你也可以把 react-kit 放到自己项目的package.json的依赖里面
+   * width:      配置模态框的宽度，是一个数值，默认单位为‘px’；
 
-## Demo
+   * height:     配置模态框的高度，是一个数值，默认单位为‘px’；
 
-checkout code: [](http://)
+   * top:          配置模态框距离可视窗口上方的距离，是一个数值，默认单位为‘px’；
 
-and run:
+   * animate: 配置模态框弹出和关闭的动画效果，是一个字符串，‘slide’表示滑动效果，‘fade’表示渐隐效果；
 
-```
-npm install
-gulp watch
-```
+   * show:      通过该属性值来控制模态框的显示和隐藏，这里是this.state.show，它是一个布尔值，为true时 
 
-有些时候国内npm源访问比较慢，那么推荐使用cnpm。建议使用nvm管理自己的node版本，建议使用较高版本的nodejs。
+     ​                显示模态框，为false时隐藏模态框。
 
-```
-npm install cnpm -g
-cnpm install -l
-gulp watch
-```
+   **PS：**
 
-## Usage
+   ​     将需要触发打开模态框的元素绑定this.handleOpen事件；
+   ​     将需要触发关闭模态框的元素绑定this.handleClose事件；
+   ​     模态框中的内容在<Modal></Modal>标签中编写。
 
-```
-var Modal = require('Modal').DropModal;
-var Example = React.createClass({
-    showModal: function(){
-        this.refs.modal.show();
-    },
-    hideModal: function(){
-        this.refs.modal.hide();
-    },
-    render: function() {
-        return (
-            <button onClick={this.showModal}>Open</button>
-            <Modal ref="modal">
-                <h2>I'm a dialog</h2>
-                <button onClick={this.hideModal}>Close</button>
-            </Modal>
-        );
-    }
-});
-```
+2. Modal默认参数配置
+
+   以下为模态框组件的默认配置，在使用中可根据需要更改配置：
+
+   show属性的值是通过触发事件来改变的，默认为false。
+
+       {   
+          width:500,
+          height:250,
+          top:100,
+          animate:'slide'       
+        };
+
+
+
+
+
+
+
+
+
+
+
